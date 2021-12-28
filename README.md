@@ -1,4 +1,9 @@
 # JWT Authentication Microservice
+[![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
+[![GitHub version](https://badge.fury.io/gh/rusudinu%2Fjwt-auth.svg)](https://badge.fury.io/gh/rusudinu%2Fjwt-auth)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/rusudinu/jwt-auth/graphs/commit-activity)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+
 JSON Web Token Authentication using Java and Spring Boot
 
 
