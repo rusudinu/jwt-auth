@@ -24,10 +24,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         /*
          *
          * BPS = bypass security
+         * "/swagger-ui/**", "/v3/api-docs/**" are not protected, because they are only available in the development environment
          *
          */
         httpSecurity.csrf().disable()
-                .authorizeRequests().antMatchers("/auth", "/register", "/data/user", "/bps/**").permitAll().
+                .authorizeRequests().antMatchers("/auth", "/register", "/data/user", "/bps/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll().
                 anyRequest().authenticated().and().
                 exceptionHandling().and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
