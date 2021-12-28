@@ -1,8 +1,13 @@
 # JWT Auth
 
+This is an Auth Rest API, written in Spring Boot, that receives a username and password and registers the user. Authentication is then made using JWTs.
+
 ## About
 
-This is an Auth Rest API, written in Spring Boot, that receives a username and password and registers the user. Authentication is then made using JWTs.
+After you run the project locally, swagger can be found [here](http://localhost:8095/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config#/), if dev profile is activated.
+
+To activate the dev profile, edit the run configuration and add the following line:
+`dev` in the Active profiles field.
 
 ## Others
 
