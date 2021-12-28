@@ -12,6 +12,11 @@ This is an Auth Rest API, written in Spring Boot, that receives a username and p
 
 This is a real-world example of JWT Auth and is production-ready.
 
+## Usage
+Clone the repository and build with Gradle `./gradlew build`. Make sure that your database is running.
+
+Check if the project is running by starting Swagger in your preferred browser. You can find the Swagger documentation [here](http://localhost:8095/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config#/). Make sure that the dev profile is activated, otherwise you won't be able to access swagger.
+
 
 ## API Reference (Swagger)
 After you run the project locally, swagger can be found [here](http://localhost:8095/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config#/), if dev profile is activated.
