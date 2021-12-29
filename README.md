@@ -28,9 +28,5 @@ To activate the dev profile, edit the run configuration and add the following li
 This project is licensed under the [Mozilla Public License 2.0](https://www.mozilla.org/en-US/MPL/2.0/).
 
 ## Others
-For other projects / cool stuff, follow me on:
-
-- [GitHub](https://github.com/rusudinu)
-- [Instagram](https://www.instagram.com/dinuustefan/)
-- [Facebook](https://www.facebook.com/rusudinustefan/)
-- [CodingShadows](https://www.codingshadows.com)
+For other projects / cool stuff, follow me on
+[GitHub](https://github.com/rusudinu)
