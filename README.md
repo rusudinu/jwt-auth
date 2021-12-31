@@ -1,4 +1,4 @@
-# JWT Authentication Microservice
+# JWT Authentication
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 [![GitHub version](https://badge.fury.io/gh/xrusu%2Fjwt-auth.svg)](https://badge.fury.io/gh/xrusu%2Fjwt-auth)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/xrusu/jwt-auth/graphs/commit-activity)
