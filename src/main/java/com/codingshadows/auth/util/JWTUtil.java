@@ -1,5 +1,6 @@
 package com.codingshadows.auth.util;
 
+import com.codingshadows.auth.exception.JWTException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -14,14 +15,14 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
-public class JWTUtil {
+public class JwtUtil {
     @Value("${codingshadows.app.jwtSecret}")
     private String SECRET_KEY;
-    private final long validityTime = 100 * 60 * 60 * 10;
+    @Value("${codingshadows.app.jwtExpirationMs}")
+    private Long jwtExpirationMs;
 
     public String extractEmail(String token) {
-        String data = extractClaim(token, Claims::getSubject);
-        return data;
+        return extractClaim(token, Claims::getSubject);
     }
 
     public Date extractExpiration(String token) {
@@ -49,11 +50,29 @@ public class JWTUtil {
 
     private String createToken(Map<String, Object> claims, String subject) {
         Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis())).setExpiration(new Date(System.currentTimeMillis() + validityTime)).signWith(key).compact();
+        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis())).setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs)).signWith(key).compact();
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
+    public Boolean validateToken(String token, UserDetails userDetails) throws JWTException {
         final String username = extractEmail(token);
-        return (username.equals((userDetails.getUsername())) && !isTokenExpired(token));
+        if (!username.equals((userDetails.getUsername()))) {
+            throw new JWTException(username, "token is not valid.");
+        }
+        if (isTokenExpired(token)) {
+            throw new JWTException(username, "due to token expiration.");
+        }
+        if(!userDetails.isEnabled()){
+            throw new JWTException(username, "the user is disabled.");
+        }
+        if(!userDetails.isAccountNonExpired()){
+            throw new JWTException(username, "the user account is expired.");
+        }
+        if(!userDetails.isCredentialsNonExpired()){
+            throw new JWTException(username, "the credentials are expired.");
+        }
+        if(!userDetails.isAccountNonLocked()){
+            throw new JWTException(username, "the account is locked.");
+        }
+        return true;
     }
 }

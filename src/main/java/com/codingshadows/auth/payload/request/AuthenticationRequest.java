@@ -1,4 +1,4 @@
-package com.codingshadows.auth.model;
+package com.codingshadows.auth.payload.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,7 +1,11 @@
 package com.codingshadows.auth.filters;
 
-import com.codingshadows.auth.service.MyUserDetailsService;
-import com.codingshadows.auth.util.JWTUtil;
+import com.codingshadows.auth.advice.UserControllerAdvice;
+import com.codingshadows.auth.exception.JWTException;
+import com.codingshadows.auth.model.ErrorMessage;
+import com.codingshadows.auth.service.UserDetailsServiceImpl;
+import com.codingshadows.auth.util.JwtUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,22 +20,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class JWTRequestFilter extends OncePerRequestFilter {
-    private final MyUserDetailsService userDetailsService;
+@RequiredArgsConstructor
+public class JwtRequestFilter extends OncePerRequestFilter {
+    private final UserDetailsServiceImpl userDetailsService;
+    private final JwtUtil jwtUtil;
 
-    private final JWTUtil jwtUtil;
-
-    public JWTRequestFilter(MyUserDetailsService userDetailsService, JWTUtil jwtUtil) {
-        this.userDetailsService = userDetailsService;
-        this.jwtUtil = jwtUtil;
-    }
+    private final UserControllerAdvice userControllerAdvice;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-            throws ServletException, IOException {
-
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         final String authorizationHeader = request.getHeader("Authorization");
-
         String username = null;
         String jwt = null;
 
@@ -40,20 +38,22 @@ public class JWTRequestFilter extends OncePerRequestFilter {
             username = jwtUtil.extractEmail(jwt);
         }
 
-
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-
-            if (jwtUtil.validateToken(jwt, userDetails)) {
-
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                usernamePasswordAuthenticationToken
-                        .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            try {
+                if (jwtUtil.validateToken(jwt, userDetails)) {
+                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                }
+            } catch (JWTException e) {
+                ErrorMessage errorMessage = userControllerAdvice.handleJWTExceptionFromFilter(e);
+                response.setStatus(errorMessage.getStatusCode());
+                response.getWriter().write(errorMessage.getMessage());
+                return;
             }
         }
         chain.doFilter(request, response);
     }
+
 }

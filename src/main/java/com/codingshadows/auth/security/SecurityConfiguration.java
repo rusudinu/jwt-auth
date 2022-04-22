@@ -1,6 +1,6 @@
 package com.codingshadows.auth.security;
 
-import com.codingshadows.auth.filters.JWTRequestFilter;
+import com.codingshadows.auth.filters.JwtRequestFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,9 +13,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    private final JWTRequestFilter jwtRequestFilter;
+    private final JwtRequestFilter jwtRequestFilter;
 
-    public SecurityConfiguration(JWTRequestFilter jwtRequestFilter) {
+    public SecurityConfiguration(JwtRequestFilter jwtRequestFilter) {
         this.jwtRequestFilter = jwtRequestFilter;
     }
 
@@ -24,11 +24,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         /*
          *
          * BPS = bypass security
-         * "/swagger-ui/**", "/v3/api-docs/**" are not protected, because they are only available in the development environment
          *
          */
         httpSecurity.csrf().disable()
-                .authorizeRequests().antMatchers("/auth", "/register", "/data/user", "/bps/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll().
+                .authorizeRequests().antMatchers("/auth", "/register", "/data/user", "/bps/**", "/email", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll().
                 anyRequest().authenticated().and().
                 exceptionHandling().and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
