@@ -14,6 +14,7 @@ import com.codingshadows.auth.repository.UserRepository;
 import com.codingshadows.auth.service.RefreshTokenService;
 import com.codingshadows.auth.service.UserDetailsServiceImpl;
 import com.codingshadows.auth.util.JwtUtil;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,7 +26,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController

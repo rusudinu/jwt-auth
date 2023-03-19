@@ -1,9 +1,9 @@
 package com.codingshadows.auth.exception;
 
+import jakarta.servlet.ServletException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.servlet.ServletException;
 import java.io.Serial;
 
 @ResponseStatus(HttpStatus.FORBIDDEN)
